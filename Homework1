@@ -1,0 +1,214 @@
+#include <iostream>
+#include <list>
+
+using namespace std;
+
+class Point {
+    int x_, y_;
+    
+    public:
+    
+    Point(int x=0, int y=0) : x_(x), y_(y) {}
+    
+    int get_x() const {
+        return x_;
+    }
+    
+    int get_y() const {
+        return y_;
+    }
+};
+
+class Shape {
+    public:
+    
+    virtual void draw() const=0;
+};
+
+class Circle : public Shape {
+    int radius_;
+    Point center_;
+    
+    public:
+    
+    Circle(Point center, int radius): center_(center), radius_(radius) {}
+    
+    void draw() const {
+        cout << "<circle cx=\"" << center_.get_x()
+            << "\" cy=\"" << center_.get_y()
+            << "\" r=\"" << radius_ << "\" />"
+            << endl;
+    }
+};
+
+class Ellipse : public Shape {
+	Point start_point_;
+	int width_, height_;
+
+	public:
+
+	Ellipse(Point start_point, int width, int height) : start_point_(start_point), width_(width), height_(height) {}
+
+	void draw() const {
+		cout << "<ellipse x=\"" << start_point_.get_x()
+			<< "\" y=\"" << start_point_.get_y()
+			<< "\" w=\"" << width_ 
+			<< "\" h=\"" << height_ << "\" />"
+			<< endl; 
+	}
+};
+
+class Rectangle : public Shape {
+	Point start_point_;
+	int width_, height_;
+    
+	public:
+
+	Rectangle(Point start_point, int width, int height) : start_point_(start_point), width_(width), height_(height) {}
+
+	void draw() const {
+		cout << "<rect x=\"" << start_point_.get_x()
+			<< "\" y=\"" << start_point_.get_y()
+			<< "\" w=\"" << width_ 
+			<< "\" h=\"" << height_ << "\" />"
+			<< endl;
+	}
+
+};
+
+class Line : public Shape {
+	Point start_point_;
+	Point end_point_;
+
+	public:
+
+	Line(Point start_point, Point end_point) : start_point_(start_point), end_point_(end_point) {}
+
+	void draw() const {
+		cout << "<line x1=\"" << start_point_.get_x()
+			<< "\" y1=\"" << start_point_.get_y()
+			<< "\" x2=\"" << end_point_.get_x() 
+			<< "\" y2=\"" << end_point_.get_y() << "\" />"
+			<< endl;	
+	}
+};
+
+class Poligon : public Shape {
+	list<Point> point_;
+
+	public:
+
+	Poligon(list<Point> point) : point_(point) {}
+
+	void draw() const {
+		cout << "<polygon points=\"";
+		for(list<Point>::const_iterator it = points_.begin(); it != points_.end(); it++){
+             cout << it->get_x() << "," << it->get_y() << " "; 
+		}
+		cout << "\" />" << endl;
+	}
+};
+
+class Polyline : public Shape {
+	list<Point> point_;
+
+	public:
+
+	Poligon(list<Point> point) : point_(point) {}
+
+	void draw() const {
+		cout << "<polyline points=\"";
+		for(list<Point>::iterator it = point_.begin(); it != point_.end(); it++){
+             cout << it->get_x() << "," << it->get_y() << " "; 
+		}
+		cout << "\" />" << endl;
+	}	
+};
+
+class Path : public Shape {
+	list<string> commands_;
+
+	public:
+
+	Path(list<string> commands) : commands_(commands) {}
+
+	void draw() {
+		cout << "path right=\"";
+		for (list<string>::iterator it = commands_.begin(); it != commands_.end(); it++) {
+			cout << *it << " "; 
+
+			cout << "\" />" << endl;
+		}
+	}
+};
+
+class CompositeFigure : public Shape {
+    list<Shape*> content_;
+    
+    public:
+    
+    ~CompositeFigure() {
+        for (list<Shape*>::iterator it = content_.begin(); it != content_.end(); it++) {
+            delete *it;
+        }
+    }
+
+    void add(Shape* shape) {
+        content_.push_back(shape);
+    }
+    
+    void draw() const {
+        for (list<Shape*>::const_iterator it = content_.begin(); it != content_.end(); it++) {
+            (*it)->draw();
+        }
+    }
+};
+
+class Canvas : public CompositeFigure {
+    
+    int width_, height_;
+    
+    public:
+    
+    Canvas(int width=100, int height=100) : width_(width), height_(height) {}
+    
+    void draw() const {
+        cout << "<svg width=\"" << width_ 
+            << "\" height=\"" << height_
+            << "\">" << endl;
+        CompositeFigure::draw();
+        cout << "</svg>" << endl;
+    }
+    
+};
+
+int main() {
+    Canvas c (1000, 1000);
+    //circle
+    c.add(new Circle(Point(20, 20), 15));
+    //ellipse
+    c.add(new Ellipse(Point(105,220)));
+    //rectangle
+    c.add(new Rectangle(Point(100, 100), 50, 50));
+    //line
+    c.add(new Line(Point(20,300)));
+    //poligone
+    c.add(new Polygon(Point(50,430),Point(150,550),Point(30,600)));
+    //poliline
+    c.add(new Polyline(Point(230,40),Point(200,70),Point(230,100),Point(200,130),Point(230,160))))
+    //path
+    list<string> commands;
+	commands.push_back("M150");
+	commands.push_back("0");
+	commands.push_back("L75");
+	commands.push_back("200");
+	commands.push_back("L225");
+	commands.push_back("200");
+	commands.push_back("Z");
+	Path* path = new Path(commands);
+	c.add(path);
+
+    c.draw();
+
+    return 0;
+}
