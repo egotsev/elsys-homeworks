@@ -1,5 +1,6 @@
 #include <iostream>
 #include <list>
+#include <string>
 
 using namespace std;
 
@@ -22,7 +23,7 @@ class Point {
 class Shape {
     public:
     
-    virtual void draw() const=0;
+    virtual void draw() const = 0;
 };
 
 class Circle : public Shape {
@@ -42,16 +43,16 @@ class Circle : public Shape {
 };
 
 class Ellipse : public Shape {
-	Point start_point_;
+	Point center_point_;
 	int width_, height_;
 
 	public:
 
-	Ellipse(Point start_point, int width, int height) : start_point_(start_point), width_(width), height_(height) {}
+	Ellipse(Point center_point, int width, int height) : center_point_(center_point), width_(width), height_(height) {}
 
 	void draw() const {
-		cout << "<ellipse x=\"" << start_point_.get_x()
-			<< "\" y=\"" << start_point_.get_y()
+		cout << "<ellipse x=\"" << center_point_.get_x()
+			<< "\" y=\"" << center_point_.get_y()
 			<< "\" w=\"" << width_ 
 			<< "\" h=\"" << height_ << "\" />"
 			<< endl; 
@@ -68,9 +69,9 @@ class Rectangle : public Shape {
 
 	void draw() const {
 		cout << "<rect x=\"" << start_point_.get_x()
-			<< "\" y=\"" << start_point_.get_y()
-			<< "\" w=\"" << width_ 
-			<< "\" h=\"" << height_ << "\" />"
+			    << "\" y=\"" << start_point_.get_y()
+                << "\" w=\"" << width_ 
+                << "\" h=\"" << height_ << "\" />"
 			<< endl;
 	}
 
@@ -93,53 +94,53 @@ class Line : public Shape {
 	}
 };
 
-class Poligon : public Shape {
-	list<Point> point_;
-
-	public:
-
-	Poligon(list<Point> point) : point_(point) {}
-
-	void draw() const {
-		cout << "<polygon points=\"";
-		for(list<Point>::const_iterator it = points_.begin(); it != points_.end(); it++){
-             cout << it->get_x() << "," << it->get_y() << " "; 
-		}
-		cout << "\" />" << endl;
-	}
+class Polygon : public Shape {
+    list<Point> point_;
+    
+    public:
+    
+    Polygon(list<Point> point) : point_(point) {}
+    
+    void draw() const {
+        cout << "<polygon points=\"";
+        for(list<Point>::const_iterator it = point_.begin(); it != point_.end(); it++) {
+            cout << (*it).get_x() << "," << (*it).get_y() << " ";
+        }
+        cout <<"\" />"
+        << endl;
+    }
+    
 };
 
-class Polyline : public Shape {
-	list<Point> point_;
-
-	public:
-
-	Poligon(list<Point> point) : point_(point) {}
-
-	void draw() const {
-		cout << "<polyline points=\"";
-		for(list<Point>::iterator it = point_.begin(); it != point_.end(); it++){
-             cout << it->get_x() << "," << it->get_y() << " "; 
-		}
-		cout << "\" />" << endl;
-	}	
+class Polyline : public Shape { 
+    list<Point> point_;
+    
+    public:
+    
+    Polyline(list<Point> point) : point_(point) {}
+    
+    void draw() const {
+        cout << "<polyline points=\"";
+        for(list<Point>::const_iterator it = point_.begin(); it != point_.end(); it++) {
+            cout << (*it).get_x() << "," << (*it).get_y() << " ";
+        }
+        cout <<"\" style=\"fill:none;stroke:black;stroke-width:3\" />"
+        << endl;
+    }  
 };
 
 class Path : public Shape {
-	list<string> commands_;
+    string commands_;
+    
+    public:
 
-	public:
-
-	Path(list<string> commands) : commands_(commands) {}
-
-	void draw() {
-		cout << "path right=\"";
-		for (list<string>::iterator it = commands_.begin(); it != commands_.end(); it++) {
-			cout << *it << " "; 
-
-			cout << "\" />" << endl;
-		}
-	}
+    Path(string commands) : commands_(commands) {}
+    
+    void draw() const {
+        cout << "<path d=\"" << commands_
+        << "\" />" 
+        << endl;
+    }
 };
 
 class CompositeFigure : public Shape {
@@ -148,66 +149,60 @@ class CompositeFigure : public Shape {
     public:
     
     ~CompositeFigure() {
-        for (list<Shape*>::iterator it = content_.begin(); it != content_.end(); it++) {
+        for(list<Shape*>::iterator it = content_.begin(); it != content_.end(); it++) {
             delete *it;
         }
     }
-
+    
     void add(Shape* shape) {
         content_.push_back(shape);
     }
     
     void draw() const {
-        for (list<Shape*>::const_iterator it = content_.begin(); it != content_.end(); it++) {
+        for(list<Shape*>::const_iterator it = content_.begin(); it != content_.end(); it++) {
             (*it)->draw();
         }
     }
 };
 
 class Canvas : public CompositeFigure {
-    
     int width_, height_;
-    
     public:
     
-    Canvas(int width=100, int height=100) : width_(width), height_(height) {}
+    Canvas (int width = 100, int height = 100) : width_(width), height_(height) {}
     
     void draw() const {
         cout << "<svg width=\"" << width_ 
-            << "\" height=\"" << height_
-            << "\">" << endl;
+        << "\" height=\"" << height_ 
+        << "\">" << endl;
         CompositeFigure::draw();
         cout << "</svg>" << endl;
-    }
-    
+    }  
 };
 
 int main() {
-    Canvas c (1000, 1000);
-    //circle
-    c.add(new Circle(Point(20, 20), 15));
-    //ellipse
-    c.add(new Ellipse(Point(105,220)));
-    //rectangle
-    c.add(new Rectangle(Point(100, 100), 50, 50));
-    //line
-    c.add(new Line(Point(20,300)));
-    //poligone
-    c.add(new Polygon(Point(50,430),Point(150,550),Point(30,600)));
-    //poliline
-    c.add(new Polyline(Point(230,40),Point(200,70),Point(230,100),Point(200,130),Point(230,160))))
-    //path
-    list<string> commands;
-	commands.push_back("M150");
-	commands.push_back("0");
-	commands.push_back("L75");
-	commands.push_back("200");
-	commands.push_back("L225");
-	commands.push_back("200");
-	commands.push_back("Z");
-	Path* path = new Path(commands);
-	c.add(path);
-
+    Canvas c(1000, 1000);
+    c.add(new Circle(Point(100, 100), 20)); 
+    c.add(new Ellipse(Point(200, 200), 100, 30));
+    c.add(new Rectangle(Point(300, 300), 300, 200));  
+    c.add(new Line(Point(400,400), Point(500,500)));
+    
+    list<Point> polygon;
+    polygon.push_back(Point(100,100));
+    polygon.push_back(Point(240,240));
+    polygon.push_back(Point(420,420));
+    polygon.push_back(Point(690,100));
+    
+    list<Point> polyline;
+    polyline.push_back(Point(69,690));
+    polyline.push_back(Point(42,420));
+    polyline.push_back(Point(66,660));
+    
+    c.add(new Polygon(polygon));
+    c.add(new Polyline(polyline));
+    
+    c.add(new Path("M150 0 L75 200 L225 200 Z"));
+    
     c.draw();
 
     return 0;
