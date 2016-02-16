@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <list>
+#include <string>
 
 using namespace std;
 
@@ -89,52 +90,52 @@ public:
 };
 
 class Polygon : public Shape{
-	Point first_point_;
-	Point second_point_;
-	Point third_point_;
+	list<Point> point_list_;
 public:
-	Polygon(Point first, Point second, Point third):first_point_(first),second_point_(second),third_point_(third)
+	Polygon(list<Point> point_list):point_list_(point_list)
 	{}
 
+	void start_draw(Point p) const{
+		cout << p.get_x() << "," << p.get_y() << " "; 
+	}
+
 	void draw() const{
-		cout << "<polygon points=\"" << first_point_.get_x() 
-		<< "," << first_point_.get_y() << " " << second_point_.get_x() 
-		<< "," << second_point_.get_y() << " " << third_point_.get_x() 
-		<< "," << third_point_.get_y()  << "\" style=\"fill:lime;stroke:purple;stroke-width:1\" />" 
-		<< endl;
+		cout << "<polygon points=\"";
+		 for (list<Point>::const_iterator it = point_list_.begin(); it != point_list_.end(); it++) {
+            start_draw(*it);
+        }
+		cout << "\" style=\"fill:lime;stroke:purple;stroke-width:1\" />" << endl;
 	}
 };
 
 class Polyline: public Shape{
-	Point first_;
-	Point second_;
-	Point third_;
+	list<Point> point_list_;
 public:
-	Polyline(Point first, Point second, Point third):first_(first),second_(second),third_(third)
+	Polyline(list<Point> point_list):point_list_(point_list)
 	{}
 
-	void draw() const{
-		cout << "<polyline points=\"" << first_.get_x() << "," << first_.get_y() 
-		<< " " << second_.get_x() << "," << second_.get_y() 
-		<< " " << third_.get_x() << "," << third_.get_y() 
-		<< "\" style=\"fill:none;stroke:purple;stroke-width:3\" />" 
-		<< endl;
+	void start_draw(Point p) const{
+		cout << p.get_x() << "," << p.get_y() << " "; 
 	}
+
+	void draw() const{
+		cout << "<polyline points=\"";
+		 for (list<Point>::const_iterator it = point_list_.begin(); it != point_list_.end(); it++) {
+            start_draw(*it);
+         }
+		cout << "\" style=\"fill:none;stroke:black;stroke-width:3\" />" << endl;
+	}
+
 };
 
 class Path: public Shape{
-	Point first_;
-	Point second_;
-	Point third_;
+	string path_;
 public:
-	Path(Point first, Point second, Point third):first_(first),second_(second),third_(third)
+	Path(string path):path_(path)
 	{}
 
 	void draw() const{
-		cout << "<path d=\"M" << first_.get_x() << " " << first_.get_y() 
-		<< " L" << second_.get_x() << " " << second_.get_y() 
-		<< " L" << third_.get_x() << " " << third_.get_y() 
-		<< "Z\" />" 
+		cout << "<path d=\"" << path_ <<  "\" />" 
 		<< endl;
 	}
 };
@@ -197,15 +198,31 @@ class Canvas : public CompositeFigure {
 
 
 int main() {
+	list<Point> list_of_points_polygone;
+	list<Point>::iterator it = list_of_points_polygone.begin();
+	list_of_points_polygone.insert(it, Point(600, 100));
+	list_of_points_polygone.insert(it, Point(700, 100));
+	list_of_points_polygone.insert(it, Point(800, 300));
+	list_of_points_polygone.insert(it, Point(900, 350));
+
+	list<Point> list_of_points_polyline;
+	list<Point>::iterator itLine = list_of_points_polyline.begin();
+	list_of_points_polygone.insert(itLine, Point(500, 500));
+	list_of_points_polygone.insert(itLine, Point(500, 700));
+	list_of_points_polygone.insert(itLine, Point(900, 300));
+	list_of_points_polygone.insert(itLine, Point(900, 350));
+
+	string path_string = "M150 0 L75 200 L225 200 Z";
+
     Canvas c(1000, 1000);
-    c.add(new Circle(Point(20, 20), 15));
-    c.add(new Circle(Point(50, 100), 50));
-    c.add(new Ellipse(Point(200, 200), 100, 50));
+  	c.add(new Circle(Point(20, 20), 15));
+   	c.add(new Circle(Point(50, 100), 50));
+   	c.add(new Ellipse(Point(200, 200), 100, 50));
     c.add(new Rectangle(Point(200, 400),100, 50));
     c.add(new Line(Point(0, 300), Point(300, 300)));
-    c.add(new Polygon(Point(100, 600),Point(100, 700),Point(300, 800)));
-    c.add(new Polyline(Point(500, 100),Point(600, 700),Point(400, 800)));
-    c.add(new Path(Point(700, 100),Point(600, 200),Point(800, 200)));
+   	c.add(new Polygon(list_of_points_polygone));
+    c.add(new Polyline(list_of_points_polyline));
+    c.add(new Path(path_string));
     c.draw();
     return 0;
 }
