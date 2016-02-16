@@ -70,36 +70,34 @@ public:
 
 class Polygon : public Shape
 {
-	Point p1_, p2_, p3_, p4_;
-	//Point place_;
+	list<Point> points_;
 public:
-	Polygon(Point p1, Point p2, Point p3, Point p4): p1_(p1), p2_(p2), p3_(p3), p4_(p4) {}
-	void draw() const
-	{
-		cout << "<polygon points=\"" << p1_.get_x()
-		<< "," << p1_.get_y() << " " << p2_.get_x() 
-		<< "," << p2_.get_y() << " " << p3_.get_x() 
-		<< "," << p3_.get_y() << " " << p4_.get_x() 
-		<< "," << p4_.get_y() << "\" />" << endl; 
-	}
+    Polygon(list<Point> points): points_(points) {}
+    void draw()
+    {
+        cout << "polygon points=\"";
+        for(list<Point>::iterator it = points_.begin(); it != points_.end(); ++it)
+        {
+            cout << it->get_x() << "," << it->get_y() << " "; 
+        }
+        cout << "\" />";
+    }
 };
 
 class Polyline : public Shape
 {
-	Point p1_, p2_, p3_, p4_, p5_, p6_;
-	//Point place_;
+    list<Point> points_;
 public:
-	Polyline(Point p1, Point p2, Point p3, Point p4, Point p5, Point p6): p1_(p1), p2_(p2), p3_(p3), p4_(p4), p5_(p5), p6_(p6) {}
-	void draw() const
-	{
-		cout << "<polyline points=\"" << p1_.get_x()
-		<< "," << p1_.get_y() << " " << p2_.get_x() 
-		<< "," << p2_.get_y() << " " << p3_.get_x() 
-		<< "," << p3_.get_y() << " " << p4_.get_x() 
-		<< "," << p4_.get_y() << " " << p5_.get_x()
-		<< "," << p5_.get_y() << " " << p6_.get_x()
-		<< "," << p6_.get_y() << "\" style=\"fill:none;stroke:black;stroke-width:4\" />" << endl; 
-	}
+    Polyline(list<Point> points): points_(points) {}
+    void draw()
+    {
+        cout << "polyline points=\"";
+        for(list<Point>::iterator it = points_.begin(); it != points_.end(); ++it)
+        {
+            cout << (*it).get_x() << "," << (*it).get_y() << " "; 
+        }
+        cout << "\" />";
+    }
 };
 
 class Line : public Shape
@@ -120,18 +118,18 @@ public:
 
 class Path : public Shape
 {
-	//int char start_, co1_, co2_, end_;
-	Point from_, through_, to_;
+	list<string> commands_;
 public:
-	Path(Point from, Point through, Point to): from_(from), through_(through), to_(to) {}
+	Path(list<string> commands): commands_(commands) {}
 	
-	void draw() const
+    void draw() const
 	{
-		cout << "<path d=\"" << "M" << from_.get_x()
-		<< " " << from_.get_y() << " " << "L" <<
-		through_.get_x() << " " << through_.get_y() <<
-		" " << "L" << to_.get_x() << " " << to_.get_y()
-		<< " " << "Z" << "\"/>" << endl;
+        cout << "<path d=\"";
+        for(list<string>::const_iterator it = commands_.begin(); it != commands_.end(); ++it)
+        {
+            cout << *it << " "; 
+        }
+        cout << "\" />";
 	}
 };
 
@@ -184,9 +182,9 @@ int main()
     c.add(new Rect(Point(240, 150), 100, 30));
 	c.add(new Ellipse(Point(309, 300), 50, 100));
 	c.add(new Line(Point(17,80), Point(163,250)));
-	c.add(new Polygon(Point(220,100), Point(30,20), Point(17,50), Point(163,234))); 
-	c.add(new Polyline(Point(0, 200), Point(40, 200), Point(40, 240), Point(80, 240), Point(80, 280), Point(140, 300)));   
-	c.add(new Path(Point(100, 350), Point(75, 520), Point(225, 500)));	
-c.draw();
+    list<string> path;
+    path.push_back("M 100,200 L 20,28 Z");
+    c.add(new Path(path));
+    c.draw();
     return 0;
 }
