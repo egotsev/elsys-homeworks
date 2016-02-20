@@ -15,11 +15,13 @@ class Labyrinth
 protected:
 	int _width;
 	int _height;
+	
 	Cell* CellAt(int x, int y) const;
-
+	Direction GetEntryDirection(Point position) const;
 public:
 	Labyrinth(int width, int height,  CellTypes cellType);
 	void Generate(Point start, Point end);
+	void Drill(Cell *cell);
 	virtual void Draw(Point cellSize) const=0;
 };
 

@@ -1,4 +1,5 @@
 #include "svglabyrinth.h"
+#include "cell.h"
 
 #include <sstream>
 #include <string>
@@ -23,5 +24,6 @@ int main(int argc, char *argv[])
 	}
 
 	SVGLabyrinth lab(labSize,labSize);
+	lab.Generate(Point(0,0),Point(labSize-1, labSize-1));
 	lab.Draw(Point(cellSize, cellSize));
 }
