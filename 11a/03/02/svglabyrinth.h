@@ -7,7 +7,7 @@ class SVGLabyrinth : public Labyrinth
 {
 public:
 	SVGLabyrinth(int width, int heigth);
-	void Draw(Point position, Point cellSize) const;
+	void Draw(Point cellSize) const;
 };
 
 #endif //SVGLABYRINTH_H

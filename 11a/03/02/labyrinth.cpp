@@ -34,7 +34,7 @@ Labyrinth::Labyrinth(int width, int height, CellTypes cellType):_cellFactory(cel
 
 void Labyrinth::Generate(Point start, Point end)
 {
-
+	
 }
 
 Cell* Labyrinth::CellAt(int x, int y) const

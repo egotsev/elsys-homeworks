@@ -20,7 +20,7 @@ protected:
 public:
 	Labyrinth(int width, int height,  CellTypes cellType);
 	void Generate(Point start, Point end);
-	virtual void Draw(Point position, Point cellSize) const=0;
+	virtual void Draw(Point cellSize) const=0;
 };
 
 #endif //LABYRINTH_H
