@@ -2,6 +2,6 @@
 
 int main()
 {
-	SVGLabyrinth lab(20,20);
-	lab.Draw(Point(0,0), Point(10,10));
+	SVGLabyrinth lab(2,2);
+	lab.Draw(Point(0,0), Point(100,100));
 }

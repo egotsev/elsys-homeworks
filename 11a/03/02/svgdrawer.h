@@ -69,17 +69,16 @@ public:
 
 // Canvas
 
-class Canvas : public Drawable 
+class Canvas 
 {
 private:
-	CompositeFigure _content;
 	int _width, _height;
 	
 public:
 	
 	Canvas(int width=100, int height=100);
-	void Add(Shape* shape);
-	void Draw() const;
+	void BeginDraw() const;
+	void EndDraw() const;
 	
 };
 

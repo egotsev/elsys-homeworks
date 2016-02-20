@@ -34,6 +34,7 @@ void Line::Draw() const
 		<< "\" y1=\"" << start_.get_y()
 		<< "\" x2=\"" << end_.get_x()
 		<< "\" y2=\"" << end_.get_y()
+		<< "\""
 		<< GetStyle()
 		<< " />"
 		<< std::endl;
@@ -67,16 +68,13 @@ void CompositeFigure::Draw() const
 
 Canvas::Canvas(int width, int height) : _width(width), _height(height) {}
 
-void Canvas::Add(Shape* shape)
-{
-	_content.Add(shape);
-}
-
-void Canvas::Draw() const {
+void Canvas::BeginDraw() const {
 	std::cout << "<svg width=\"" << _width 
 		<< "\" height=\"" << _height
-		<< "\">" << std::endl;
-	_content.Draw();
-	std::cout << "</svg>" << std::endl;
+		<< "\" xmlns=\"http://www.w3.org/2000/svg\">" << std::endl;
+	
 }
 
+void Canvas::EndDraw() const {
+	std::cout << "</svg>" << std::endl;
+}

@@ -37,7 +37,7 @@ void Labyrinth::Generate(Point start, Point end)
 
 }
 
-Cell* Labyrinth::CellAt(int x, int y)
+Cell* Labyrinth::CellAt(int x, int y) const
 {
 	return _cells[y * _width + x];
 }

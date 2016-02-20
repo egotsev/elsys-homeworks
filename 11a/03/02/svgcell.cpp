@@ -2,25 +2,32 @@
 
 Line* SVGCell::GetLine(Point position, Point size, Direction dir) const
 {
+	Line *line;
 	switch(dir)
 	{
 		case UP:
-			return new Line(position, Point(position.get_x() + size.get_x(), position.get_y()));
-
+			line = new Line(position, Point(position.get_x() + size.get_x(), position.get_y()));
+			break;
 		case RIGHT:
-			return new Line(Point(position.get_x() + size.get_x(), position.get_y()),
+			line = new Line(Point(position.get_x() + size.get_x(), position.get_y()),
 						 Point(position.get_x() + size.get_x(), position.get_y() + size.get_y()));
-
+			break;
 		case DOWN:
-			return new Line(Point(position.get_x(), position.get_y() + size.get_y()),
+			line = new Line(Point(position.get_x(), position.get_y() + size.get_y()),
 						 Point(position.get_x() + size.get_x(), position.get_y() + size.get_y()));
-
+			break;
 		case LEFT:
-			return new Line(position, Point(position.get_x(), position.get_y() + size.get_y()));
-
+			line =  new Line(position, Point(position.get_x(), position.get_y() + size.get_y()));
+			break;
 		default:
+			// This shouldn't execute 
 			return new Line(position,position);
 	}
+
+	line->SetStyleAttr("stroke", "rgb(255,0,0)");
+	line->SetStyleAttr("stroke-width", "2");
+
+	return line;
 }
 
 void SVGCell::Draw(Point position, Point size) const
@@ -38,4 +45,5 @@ void SVGCell::Draw(Point position, Point size) const
 		}
 	}
 
+	cellFigure.Draw();
 }

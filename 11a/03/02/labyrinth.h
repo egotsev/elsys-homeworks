@@ -15,8 +15,8 @@ class Labyrinth
 protected:
 	int _width;
 	int _height;
-	Cell* CellAt(int x, int y);
-	
+	Cell* CellAt(int x, int y) const;
+
 public:
 	Labyrinth(int width, int height,  CellTypes cellType);
 	void Generate(Point start, Point end);
