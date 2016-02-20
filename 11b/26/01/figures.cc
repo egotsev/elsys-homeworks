@@ -30,15 +30,14 @@ public:
         return y_;
     }
 
-    static void draw(Point point) {
-        cout << point.get_x() << "," << point.get_y() << " ";
+    void draw() const {
+        cout << x_ << "," << y_ << " ";
     }
 
     static void draw(list<Point> points_) {
         for (list<Point>::const_iterator it = points_.begin();
-             it != points_.end();
-             it++) {
-            draw(*it);
+                it != points_.end(); it++) {
+            it->draw();
         }
     }
 };
@@ -82,18 +81,17 @@ public:
 };
 
 class Rectangle : public Shape {
-    int x_;
-    int y_;
+    Point p_;
     int width_;
     int height_;
 
 public:
-    Rectangle(int x, int y, int width, int height)
-    : x_(x), y_(y), width_(width), height_(height) {}
+    Rectangle(Point p, int width, int height)
+    : p_(p), width_(width), height_(height) {}
 
     void draw() const {
-        cout << "<rectangle x=\"" << x_ << "\""
-            << " y=\"" << y_ << "\""
+        cout << "<rectangle x=\"" << p_.get_x() << "\""
+            << " y=\"" << p_.get_y() << "\""
             << " width=\"" << width_ << "\""
             << " height=\"" << height_ << "\" />"
             << endl;
@@ -101,20 +99,18 @@ public:
 };
 
 class Line : public Shape {
-    int x1_;
-    int y1_;
-    int x2_;
-    int y2_;
+    Point p1_;
+    Point p2_;
 
 public:
-    Line(int x1, int y1, int x2, int y2)
-    : x1_(x1), y1_(y1), x2_(x2), y2_(y2) {}
+    Line(Point p1, Point p2)
+    : p1_(p1), p2_(p2) {}
 
     void draw() const {
-        cout << "<line x1=\"" << x1_ << "\""
-            << " y1=\"" << y1_ << "\""
-            << " x2=\"" << x2_ << "\""
-            << " y2=\"" << y2_ << "\" />"
+        cout << "<line x1=\"" << p1_.get_x() << "\""
+            << " y1=\"" << p1_.get_y() << "\""
+            << " x2=\"" << p2_.get_x() << "\""
+            << " y2=\"" << p2_.get_y() << "\" />"
             << endl;
     }
 };
@@ -142,14 +138,21 @@ public:
     }
 };
 
+typedef pair <char, Point> PathPair;
 class Path : public Shape {
-    string definition_;
+    list<PathPair> definition_;
 
 public:
-    Path(string definition): definition_(definition) {}
+    Path(list<PathPair> definition): definition_(definition) {}
 
     void draw() const {
-        cout << "<path d=\"" << definition_ << "\" />" << endl;
+        cout << "<path d=\"";
+        for (list<PathPair>::const_iterator it = definition_.begin();
+                it != definition_.end(); it++) {
+            cout << it->first << " ";
+            it->second.draw();
+        }
+        cout << "\" />" << endl;
     }
 };
 
@@ -181,7 +184,7 @@ public:
     Canvas(int width=100, int height=100) : width_(width), height_(height) {}
 
     void draw() const {
-        cout << "<svg width=\"" << width_
+        cout << "<svg xmlns=\"https://www.w3.org/2000/svg\" width=\"" << width_
             << "\" height=\"" << height_
             << "\">" << endl;
         CompositeFigure::draw();
@@ -196,8 +199,8 @@ int main() {
 
     c.add(new Circle(Point(20, 20), 15));
     c.add(new Ellipse(Point(50, 100), 10, 10));
-    c.add(new Rectangle(50, 20, 150, 150));
-    c.add(new Line(0, 0, 200, 200));
+    c.add(new Rectangle(Point(50, 20), 150, 150));
+    c.add(new Line(Point(0, 0), Point(200, 200)));
 
     list<Point> polygon_points;
     polygon_points.push_back(Point(220, 10));
@@ -211,7 +214,12 @@ int main() {
     polyline_points.push_back(Point(60, 40));
     c.add(new Polyline(polyline_points));
 
-    c.add(new Path("M150 0 L75 200 L225 200 Z"));
+    list<PathPair> definition;
+    definition.push_back(make_pair('M', Point(150, 0)));
+    definition.push_back(make_pair('L', Point(75, 200)));
+    definition.push_back(make_pair('L', Point(225, 200)));
+    definition.push_back(make_pair('Z', Point(150, 0)));
+    c.add(new Path(definition));
 
     c.draw();
     return 0;
