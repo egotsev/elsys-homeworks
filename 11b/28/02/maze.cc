@@ -92,19 +92,14 @@ public:
 		list<pair<char, Point> > listt;
 
 		listt.push_back(make_pair('M', Point(col_ * step, row_ * step)));
-		//listt.push_back(make_pair(' ', row_ * step));
 
 		listt.push_back(make_pair(has_wall(DOWN)? 'l' : 'm', Point(step, 0)));
-		//listt.push_back(make_pair(' ', row_ * step));
 
 		listt.push_back(make_pair(has_wall(RIGHT)? 'l' : 'm', Point(0, step)));
-		//listt.push_back(make_pair(' ', (row_ * step) + step));
 
 		listt.push_back(make_pair(has_wall(UP)? 'l' : 'm', Point(-step, 0)));
-		//listt.push_back(make_pair(' ', (col_ * step) + step));
 
 		listt.push_back(make_pair(has_wall(LEFT)? 'l' : 'm', Point(0, -step)));
-		//listt.push_back(make_pair(' ', row_ * step));
 
 		Path* path = new Path(listt);
 		path -> draw();
@@ -222,7 +217,7 @@ public:
 	}
 
 	void draw() {
-		Canvas obj(500 * rows_, 500 * cols_);
+		Canvas obj(20 * rows_, 20 * cols_);
 
 		for(vector<Cell>::iterator it = cells_.begin(); it != cells_.end(); it++) {
 			obj.add(&(*it));
