@@ -32,10 +32,6 @@ public:
 			cout << (*it).get_x() << "," << (*it).get_y() << " ";
 		}
 	}
-
-	void draw() const {
-		cout << x_ << "," << y_ << " ";
-	}
 };
 
 class Styleable {
@@ -177,7 +173,11 @@ public:
 		cout << "<path d=\"";
 		for(list<pair<char, Point> >::const_iterator it = path_.begin(); it != path_.end(); it++) {
 			cout << it -> first << " ";
-			it -> second.draw();
+
+			int x = it->second.get_x();
+			int y = it->second.get_y();
+
+			cout << x << "," << y << " ";
 		}
 
 		cout << "\" />" << endl;
