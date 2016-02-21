@@ -12,6 +12,8 @@ enum CellTypes
 	PostScript
 };
 
+class NotImplementedException{};
+
 class CellFactory
 {
 private:
@@ -19,7 +21,7 @@ private:
 
 public:
 	CellFactory(CellTypes cellType);
-	Cell* CreateCell();
+	Cell* CreateCell(Point position, Point size);
 };
 
 #endif //CELL_FACTORY

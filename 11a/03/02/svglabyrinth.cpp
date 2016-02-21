@@ -1,24 +1,26 @@
 #include "svglabyrinth.h"
 #include "svgdrawer.h"
+#include "svgcell.h"
 
-SVGLabyrinth::SVGLabyrinth(int width, int height)
-:Labyrinth(width,height,SVG)
+SVGLabyrinth::SVGLabyrinth(int width, int height, Point cellSize)
+:Labyrinth(width, height, cellSize, SVG),
+_canvas((width + 2) * cellSize.get_x(), (height + 2) * cellSize.get_y())
 {
-}
-
-void SVGLabyrinth::Draw(Point cellSize) const
-{
-	Canvas labyrinthCanvas((_width + 2) * cellSize.get_x(), (_height + 2) * cellSize.get_y());
-	labyrinthCanvas.BeginDraw();
-
-	for (int i = 0; i < _width; ++i)
+	for (int i = 0; i < width; ++i)
 	{
-		for (int j = 0; j < _height; ++j)
+		for (int j = 0; j < height; ++j)
 		{
-			Point currCellPosition((i + 1) * cellSize.get_x(), (j + 1) * cellSize.get_y());
-			CellAt(i,j)->Draw(currCellPosition, cellSize);
+			SVGCell *svgCell = static_cast<SVGCell*>(CellAt(i,j));
+
+			if(svgCell != NULL)
+			{
+				_canvas.Add(svgCell);
+			}
 		}
 	}
+}
 
-	labyrinthCanvas.EndDraw();
+void SVGLabyrinth::Draw() const
+{
+	_canvas.Draw();
 }

@@ -2,14 +2,17 @@
 #include <stdlib.h>
 #include <time.h>
 
-Labyrinth::Labyrinth(int width, int height, CellTypes cellType):_cellFactory(cellType)
+Labyrinth::Labyrinth(int width, int height, Point cellSize, CellTypes cellType):_cellFactory(cellType)
 {
 	_width = width;
 	_height = height;
 
-	for (int i = 0; i < _width * _height; ++i)
+	for (int i = 0; i < _width; i++) 
 	{
-		_cells.push_back(_cellFactory.CreateCell());
+		for(int j = 0; j < _height; j++) 
+		{
+			_cells.push_back(_cellFactory.CreateCell(Point(j + 1, i + 1), cellSize));
+		}
 	}
 
 	for (int i = 0; i < _width; i++) 
@@ -46,8 +49,15 @@ void Labyrinth::Generate(Point start, Point end)
 	srand(time(NULL));
 	Drill(CellAt(start.get_x(), start.get_y()));
 
-	CellAt(end.get_x(), end.get_y())->Drill(exitDir);
+
+	//Drill entry door
 	CellAt(start.get_x(), start.get_y())->Drill(entryDir);
+
+	// Drill exit door
+	CellAt(end.get_x(), end.get_y())->Drill(exitDir);
+
+	_startPos = start;
+	_endPos = end;
 }
 
 void Labyrinth::Drill(Cell *cell)

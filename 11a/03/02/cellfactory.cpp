@@ -7,14 +7,18 @@ CellFactory::CellFactory(CellTypes cellType)
 }
 
 
-Cell* CellFactory::CreateCell()
+Cell* CellFactory::CreateCell(Point position, Point size)
 {
+	Cell *cell;
+
 	switch(_cellType)
 	{
 		case SVG:
-			return new SVGCell();
-		case PostScript:
-			
+			cell = new SVGCell(position, size);
 			break;
+		default:
+			throw NotImplementedException();
 	}
+
+	return cell;
 }

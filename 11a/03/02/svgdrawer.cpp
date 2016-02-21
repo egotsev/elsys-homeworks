@@ -68,13 +68,15 @@ void CompositeFigure::Draw() const
 
 Canvas::Canvas(int width, int height) : _width(width), _height(height) {}
 
-void Canvas::BeginDraw() const {
+void Canvas::Add(Shape *shape)
+{
+	_content.Add(shape);
+}
+
+void Canvas::Draw() const {
 	std::cout << "<svg width=\"" << _width 
 		<< "\" height=\"" << _height
 		<< "\" xmlns=\"http://www.w3.org/2000/svg\">" << std::endl;
-	
-}
-
-void Canvas::EndDraw() const {
+	_content.Draw();
 	std::cout << "</svg>" << std::endl;
 }

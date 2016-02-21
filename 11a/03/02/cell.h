@@ -24,15 +24,18 @@ private:
 
 protected:
 	Direction _walls;
+	Point _position;
+	Point _size;
 
 public:
-	Cell();
+	Cell(Point position, Point size);
+
 	void Drill(Direction dir);
 	Cell* RandomDrill();
 	bool HasUnvisitedNeighbours() const;
+	bool HasWall(Direction dir) const;
 	void Visit();
 	void SetNeighbour(Direction dir, Cell* neighbour);
-	virtual void Draw(Point position, Point size) const=0;
 };	
 
 #endif //CELL_H

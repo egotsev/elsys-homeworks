@@ -73,12 +73,12 @@ class Canvas
 {
 private:
 	int _width, _height;
-	
+	CompositeFigure _content;
 public:
 	
 	Canvas(int width=100, int height=100);
-	void BeginDraw() const;
-	void EndDraw() const;
+	void Add(Shape *shape);
+	void Draw() const;
 	
 };
 

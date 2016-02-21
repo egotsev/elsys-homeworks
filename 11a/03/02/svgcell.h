@@ -4,12 +4,13 @@
 #include "cell.h"
 #include "svgdrawer.h"
 
-class SVGCell : public Cell
+class SVGCell : public Cell, public Shape
 {
 private:
-	Line* GetLine(Point position, Point size, Direction dir) const;
+	Line* GetWallLine(Direction dir) const;
 public:
-	void Draw(Point position, Point size) const;
+	SVGCell(Point position, Point size);
+	void Draw() const;
 };
 
 #endif //SVG_CELL_H

@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 		convert >> cellSize;
 	}
 
-	SVGLabyrinth lab(labSize,labSize);
-	lab.Generate(Point(0,0),Point(labSize-1, labSize-1));
-	lab.Draw(Point(cellSize, cellSize));
+	SVGLabyrinth lab(labSize, labSize, Point(cellSize, cellSize));
+	lab.Generate(Point(0,0), Point(labSize-1, labSize-1));
+	lab.Draw();
 }

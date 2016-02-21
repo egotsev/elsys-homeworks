@@ -1,10 +1,11 @@
 #include "cell.h"
 #include <stdlib.h>
 
-
-Cell::Cell()
+Cell::Cell(Point position, Point size)
 {
 	_walls = ALL;
+	_position = Point(position.get_x() * size.get_x(), position.get_y() * size.get_y());
+	_size = size;
 }
 
 void Cell::Drill(Direction dir)
@@ -22,7 +23,6 @@ Cell* Cell::RandomDrill()
 	Cell* selected = unvisited[random].second;
 
 	Drill(dir);
-	
 	Direction reverse = (Direction)((dir <= RIGHT) ? dir << 2 : dir >> 2);
 	selected->Drill(reverse);
 
@@ -38,6 +38,11 @@ bool Cell::HasUnvisitedNeighbours() const
 	}
 
 	return false;
+}
+
+bool Cell::HasWall(Direction dir) const
+{
+	return _walls & dir;
 }
 
 std::vector<std::pair<Direction, Cell*> > Cell::GetUnvisited()
