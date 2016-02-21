@@ -273,7 +273,7 @@ int main() {
 	//d.draw();
 
 	/*
-	list<pairs> p;
+	list<pair<char, Point> > p;
 	p.push_back(make_pair('M', Point(150, 0)));
 	p.push_back(make_pair('L', Point(75, 200)));
 	p.push_back(make_pair('L', Point(225, 200)));
