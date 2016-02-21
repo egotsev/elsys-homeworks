@@ -14,7 +14,6 @@ enum Direction {
 
 class MazeError {};
 
-Path path;
 
 class Cell {
     friend class Board;
@@ -84,47 +83,21 @@ class Cell {
     }
     
     
-    void draw(int length) {
-    	path.add(Path::Option("M", col_*length)); //cout << col_*length << " " << row_*length << " moveto" << endl;
+    void draw(int length, Path &path) {
+    	path.add(Path::Option("M", col_*length)); 
     	path.add(Path::Option("", row_*length));
        
-       	if(has_wall(DOWN)) {
-       		path.add(Path::Option("l", length)); //cout << length << " " << 0 << (has_wall(DOWN) ? " rlineto" : " rmoveto") << endl;
-       		path.add(Path::Option("", 0));
-       	}
-       	else {
-       		path.add(Path::Option("m", length)); 
-       		path.add(Path::Option("", 0));
-       	}
+        path.add(Path::Option(has_wall(DOWN) ? "l" : "m", length));
+       	path.add(Path::Option("", 0));
 		
-		if(has_wall(RIGHT)) {
-       		path.add(Path::Option("l", 0)); //cout << 0 << " " << length << (has_wall(RIGHT) ? " rlineto" : " rmoveto")  << endl;
-       		path.add(Path::Option("", length));
-       	}
-       	else {
-       		path.add(Path::Option("m", 0)); 
-       		path.add(Path::Option("", length));
-       	}
-		
-		if(has_wall(UP)) {
-       		path.add(Path::Option("l", -length)); //cout << -length << " " << 0 << (has_wall(UP) ? " rlineto" : " rmoveto") << endl;
-       		path.add(Path::Option("", 0));
-       	}
-       	else {
-       		path.add(Path::Option("m", -length)); 
-       		path.add(Path::Option("", 0));
-       	}
-		
-		if(has_wall(LEFT)) {
-       		path.add(Path::Option("l", 0));
-       		path.add(Path::Option("", -length)); //cout << 0 << " " << -length << (has_wall(LEFT) ? " rlineto" : " rmoveto") << endl;
-       	}
-       	else {
-       		path.add(Path::Option("m", 0)); 
-       		path.add(Path::Option("", -length));
-       	}
-		
-		
+		path.add(Path::Option(has_wall(RIGHT) ? "l" : "m", 0));
+   		path.add(Path::Option("", length));
+   		
+		path.add(Path::Option(has_wall(UP) ? "l" : "m", -length));
+   		path.add(Path::Option("", 0));
+   		
+   		path.add(Path::Option(has_wall(LEFT) ? "l" : "m", 0));
+   		path.add(Path::Option("", -length));		
     }
     
     
@@ -188,6 +161,7 @@ class Cell {
 class Board : public Drawable{
     vector<Cell> cells_;
     int rows_, cols_;
+    Path path;
     public:
     
     Board(int rows, int cols) : rows_(rows), cols_(cols) {
@@ -217,11 +191,10 @@ class Board : public Drawable{
     }
     
     void draws(int size = 10) {
-		for(vector<Cell>::iterator it = cells_.begin();
-			it!=cells_.end(); ++it) {
-		
-			(*it).draw(size);	
+		for(vector<Cell>::iterator it = cells_.begin(); it!=cells_.end(); ++it) {
+			(*it).draw(size, path);	
 		}
+		path.set_property("stroke", "purple").set_property("fill", "none").set_property("stroke-width", "3");
 	}
 	
 	void draw() const {
@@ -229,10 +202,6 @@ class Board : public Drawable{
 		canvas.add(new Path(path));
 		canvas.draw();
     }
-    
-    void setprop() {
-		path.set_property("stroke", "red").set_property("fill", "none").set_property("stroke-width", "2");
-	}
 	
 };
 
@@ -251,7 +220,6 @@ int main() {
     Cell& start = board.at(0, 0);
     generate_maze(board, start);
     board.draws(20);
-    board.setprop();
     board.draw();
     
     return 0;

@@ -71,7 +71,7 @@ public:
     class Option {
         string prefix_;
         int number_;
-
+	
     public:
         Option(string prefix, int number)
         : prefix_(prefix), number_(number)
