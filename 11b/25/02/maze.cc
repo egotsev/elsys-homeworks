@@ -67,20 +67,27 @@ public:
 	}
 
 	void draw(int step=20  ) const {
-    list<pair<char, Point> >l;
+    		Drawing d;
+		if (has_wall(UP)) {
+			d.add(new Line(Point(col_ * step, row_ * step),
+			Point((col_ + 1) * step, row_ * step)));
+		}
 
-		l.push_back(make_pair('M', Point(col_ * step, row_ * step)));
+		if (has_wall(DOWN)) {
+			d.add(new Line(Point(col_ * step, (row_ + 1) * step),
+				Point((col_ + 1) * step, (row_ + 1) * step)));
+		}
+		if (has_wall(LEFT)) {
+			d.add(new Line(Point(col_ * step, row_ * step),
+				Point(col_ * step, (row_ + 1) * step)));
+		}
 
-		l.push_back(make_pair(has_wall(DOWN)? 'l' : 'm', Point(step, 0)));
+		if (has_wall(RIGHT)) {
+			d.add(new Line(Point((col_ + 1) * step, row_ * step),
+				Point((col_ + 1) * step, (row_ + 1) * step)));
+		}
 
-		l.push_back(make_pair(has_wall(RIGHT)? 'l' : 'm', Point(0, step)));
-
-		l.push_back(make_pair(has_wall(UP)? 'l' : 'm', Point(-step, 0)));
-
-		l.push_back(make_pair(has_wall(LEFT)? 'l' : 'm', Point(0, -step)));
-
-		Path* path = new Path(l);
-		path -> draw();
+		d.draw();
 
 
     /*
