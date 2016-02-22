@@ -99,7 +99,7 @@ public:
 	Line(Point start , Point end)
 	: start_(start),
 	end_(end)
-	{set_style();}
+	{set_style("stroke: black; stroke-width: 2");}
 
 		void draw() const{
 
