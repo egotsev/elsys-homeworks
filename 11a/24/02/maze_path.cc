@@ -85,8 +85,8 @@ public:
     	 return result;
     }
     
-    Path& add_option(string prefix, Point point) {
-        options_.insert(pair<string,Point*>(prefix,&point));
+    Path& add_option(string prefix, Point* point) {
+        options_.insert(pair<string,Point*>(prefix,point));
     }
     
     void draw() const {

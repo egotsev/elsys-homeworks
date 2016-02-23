@@ -86,11 +86,16 @@ class Cell {
     }
     
     void draw(int length) const {
-        cout << col_*length << " " << row_*length << " moveto" << endl;
-        cout << length << " " << 0 << (has_wall(DOWN) ? " rlineto" : " rmoveto") << endl;
-        cout << 0 << " " << length << (has_wall(RIGHT) ? " rlineto" : " rmoveto")  << endl;
-        cout << -length << " " << 0 << (has_wall(UP) ? " rlineto" : " rmoveto") << endl;
-        cout << 0 << " " << -length << (has_wall(LEFT) ? " rlineto" : " rmoveto") << endl;
+    		Path p;
+    		p.add_option("M",new Point(col_*length,row_*length));
+    		p.add_option((has_wall(DOWN) ? "L" : "M"),new Point(length,0));
+    		p.add_option((has_wall(RIGHT) ? "L" : "M"),new Point(0,length));
+    		p.add_option((has_wall(UP) ? "L" : "M"),new Point(-length,0));
+    		p.add_option((has_wall(LEFT) ? "L" : "M"),new Point(0,-length));
+//        cout << length << " " << 0 << (has_wall(DOWN) ? " rlineto" : " rmoveto") << endl;
+//        cout << 0 << " " << length << (has_wall(RIGHT) ? " rlineto" : " rmoveto")  << endl;
+//        cout << -length << " " << 0 << (has_wall(UP) ? " rlineto" : " rmoveto") << endl;
+//        cout << 0 << " " << -length << (has_wall(LEFT) ? " rlineto" : " rmoveto") << endl;
     }
     
     Cell* up() {
