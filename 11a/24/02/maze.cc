@@ -48,9 +48,9 @@ class Cell : public Shape{
     
     public:
     
-    Cell(int row, int col, int size) : visited_(false), row_(row), col_(col), 
+    Cell(int row, int col, int size) : visited_(false), row_(row), col_(col), length_(size),
     walls_(UP | RIGHT | DOWN | LEFT),
-    up_(0), right_(0), down_(0), left_(0), length_(size) {}
+    up_(0), right_(0), down_(0), left_(0){}
     
     void drill(Direction dir) {
         //dir = 1000
@@ -93,6 +93,7 @@ class Cell : public Shape{
     		p.add_option((has_wall(RIGHT) ? "L" : "M"),new Point(0,length_));
     		p.add_option((has_wall(UP) ? "L" : "M"),new Point(-length_,0));
     		p.add_option((has_wall(LEFT) ? "L" : "M"),new Point(0,-length_));
+    		
     		p.draw();
 //        cout << length << " " << 0 << (has_wall(DOWN) ? " rlineto" : " rmoveto") << endl;
 //        cout << 0 << " " << length << (has_wall(RIGHT) ? " rlineto" : " rmoveto")  << endl;
