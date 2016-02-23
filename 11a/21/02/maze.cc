@@ -90,13 +90,6 @@ public:
 			throw BoardError();
 		}
 	}
-
-	void draw(Path* path, int step = 10) const {
-		path->add_option((has_wall(UP)?"l":"m"), step).add_option("", 0);
-		path->add_option((has_wall(RIGHT)?"l":"m"), 0).add_option("", step);
-		path->add_option((has_wall(DOWN)?"l":"m"), -step).add_option("", 0);
-		path->add_option((has_wall(LEFT)?"l":"m"), 0).add_option("", -step);
-	}
 	
 	Cell* up() const {
 		return up_;
@@ -189,7 +182,7 @@ public:
 	}
 	
 	void draw(int size = 10) const {
-		Canvas c(1000, 1000);
+		Canvas c(cols_ * size, rows_ * size);
 		Path* path = new Path();
 
 		for(vector<Cell>::const_iterator it = cells_.begin();
@@ -200,7 +193,10 @@ public:
 			int starting_col = it->get_col() * size;
 			int starting_row = (rows_ - 1) * size - it->get_row() * size;
 			path->add_option("M", starting_col).add_option("", starting_row);
-			it->draw(path, size);
+			path->add_option((it->has_wall(UP)?"l":"m"), size).add_option("", 0);
+			path->add_option((it->has_wall(RIGHT)?"l":"m"), 0).add_option("", size);
+			path->add_option((it->has_wall(DOWN)?"l":"m"), -size).add_option("", 0);
+			path->add_option((it->has_wall(LEFT)?"l":"m"), 0).add_option("", -size);
 		}
 
 		path->set_property("stroke", "black")
