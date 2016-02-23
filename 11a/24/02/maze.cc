@@ -18,11 +18,12 @@ enum Direction {
 
 class MazeError {};
 
-class Cell : public Shape{
+class Cell : public Shape {
     friend class Board;
 
     int row_, col_;
     int length_;
+    unsigned long int id_ = 0;
     bool visited_;
     int walls_;
     Cell* up_;
@@ -48,9 +49,8 @@ class Cell : public Shape{
     
     public:
     
-    Cell(int row, int col, int size) : visited_(false), row_(row), col_(col), length_(size),
-    walls_(UP | RIGHT | DOWN | LEFT),
-    up_(0), right_(0), down_(0), left_(0){}
+    Cell(int row, int col, int size, unsigned long int id) : visited_(false), row_(row), col_(col), length_(size), id_(id), walls_(UP | RIGHT | DOWN | LEFT),
+    up_(0), right_(0), down_(0), left_(0) {}
     
     void drill(Direction dir) {
         //dir = 1000
@@ -88,12 +88,13 @@ class Cell : public Shape{
     
     void draw() const {
     		Path p;
-    		p.add_option("M",new Point(col_*length_,row_*length_));
-    		p.add_option((has_wall(DOWN) ? "L" : "M"),new Point(length_,0));
-    		p.add_option((has_wall(RIGHT) ? "L" : "M"),new Point(0,length_));
-    		p.add_option((has_wall(UP) ? "L" : "M"),new Point(-length_,0));
-    		p.add_option((has_wall(LEFT) ? "L" : "M"),new Point(0,-length_));
-    		
+    		p.add_option(id_*5+1,"M",Point((col_+1)*length_,(row_+1)*length_));
+    		p.add_option(id_*5+2,(has_wall(DOWN) ? "l" : "m"),Point(length_,0));
+    		p.add_option(id_*5+3,(has_wall(RIGHT) ? "l" : "m"),Point(0,length_));
+    		p.add_option(id_*5+4,(has_wall(UP) ? "l" : "m"),Point(-length_,0));
+    		p.add_option(id_*5+5,(has_wall(LEFT) ? "l" : "m"),Point(0,-length_));
+    		p.set_property("fill","none");
+    		p.set_property("stroke","blue");
     		p.draw();
 //        cout << length << " " << 0 << (has_wall(DOWN) ? " rlineto" : " rmoveto") << endl;
 //        cout << 0 << " " << length << (has_wall(RIGHT) ? " rlineto" : " rmoveto")  << endl;
@@ -156,17 +157,20 @@ class Cell : public Shape{
     }
 };
 
+
 class Board {
     vector<Cell> cells_;
     int rows_, cols_;
     int cell_size_;
+    static unsigned long int cell_id;
     
     public:
     
     Board(int rows, int cols, int cell_size) : rows_(rows), cols_(cols), cell_size_(cell_size) {
         for (int i = 0; i < rows_; i++) {
             for(int j = 0; j < cols_; j++) {
-                cells_.push_back(Cell(i, j, cell_size_));
+                cells_.push_back(Cell(i, j, cell_size_, Board::cell_id));
+                Board::cell_id++;
             }
         }
         
@@ -192,21 +196,22 @@ class Board {
     void draw() {
 		//cout << "newpath" << endl;
 		
-		Canvas c(rows_*cell_size_,cols_*cell_size_);
-
+		Canvas c(rows_*cell_size_*1.5,cols_*cell_size_*1.5);
+		
 		for(vector<Cell>::iterator it = cells_.begin();
 			it!=cells_.end(); ++it) {
 		
-			c.add(&(*it));	
+			c.add(&(*it));
 		}
 		
 		c.draw();
-		
 		//cout << "stroke" << endl;
 		//cout << "showpage" << endl;
 		
 	}
 };
+
+unsigned long int Board::cell_id = 0;
 
 void generate_maze(Board& board, Cell& start) {
     start.visit();

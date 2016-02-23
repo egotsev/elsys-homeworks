@@ -71,27 +71,22 @@ class Circle : public Shape {
 };
 
 class Path : public Shape {
-    std::map<string, Point*> options_;
+    std::map<int, std::map<string,Point>> options_;
 
 public:
     
-    Path() {}
-    ~Path() {
-    	for(map<string, Point*>::iterator it = options_.begin(); it != options_.end(); it++) {
-    		delete it->second;
-    	}
-    }
-    
     string get_options() const {
        string result = "";
-       for(std::map<string, Point*>::const_iterator it = options_.begin(); it != options_.end(); it++) {
-        		result += it->first + "" + std::to_string(((it->second)->Point::get_x())) + " " + std::to_string(((it->second)->Point::get_y())) + " ";
-    	 }
+       for(std::map<int, std::map<string, Point>>::const_iterator it = options_.begin(); it != options_.end(); it++) {
+       	for(std::map<string, Point>::const_iterator it2 = (it->second).begin(); it2 != (it->second).end(); it2++) {
+        		result += it2->first + "" + std::to_string(((it2->second).Point::get_x())) + " " + std::to_string(((it2->second).Point::get_y())) + " ";
+        }
+    	}
     	 return result;
     }
     
-    Path& add_option(string prefix, Point* point) {
-        options_.insert(pair<string,Point*>(prefix,point));
+    Path& add_option(int id, string prefix, Point point) {
+        options_[id].insert(std::make_pair(prefix,point));
     }
     
     void draw() const {
@@ -109,11 +104,11 @@ class CompositeFigure : public Shape {
     
     public:
     
-    ~CompositeFigure() {
-        for (list<Shape*>::iterator it = content_.begin(); it != content_.end(); it++) {
-            delete *it;
-        }
-    }
+//    ~CompositeFigure() {
+//        for (list<Shape*>::iterator it = content_.begin(); it != content_.end(); it++) {
+//           delete *it;
+//        }
+//    }
 
     void add(Shape* shape) {
         content_.push_back(shape);
