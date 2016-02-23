@@ -103,7 +103,7 @@ class Cell {
 		path->add(Path::Option((has_wall(UP) ? "l" : "m"), -length));
 		path->add(Path::Option("", 0));
 
-		path->add(Path::Option((has_wall(RIGHT) ? "l" : "m"), 0));
+		path->add(Path::Option((has_wall(LEFT) ? "l" : "m"), 0));
         path->add(Path::Option("", -length));
 	}
 
