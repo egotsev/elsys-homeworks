@@ -76,11 +76,16 @@ class Path : public Shape {
 public:
     
     Path() {}
+    ~Path() {
+    	for(map<string, Point*>::iterator it = options_.begin(); it != options_.end(); it++) {
+    		delete it->second;
+    	}
+    }
     
     string get_options() const {
        string result = "";
        for(std::map<string, Point*>::const_iterator it = options_.begin(); it != options_.end(); it++) {
-        		result += it->first + "" + (it->second)->get_x() + " " + (it->second)->get_y() + " ";
+        		result += it->first + "" + std::to_string(((it->second)->Point::get_x())) + " " + std::to_string(((it->second)->Point::get_y())) + " ";
     	 }
     	 return result;
     }
@@ -91,6 +96,7 @@ public:
     
     void draw() const {
         cout << "<path d=\"";
+        
 				cout << get_options();
         cout << "\" "
             << get_style()

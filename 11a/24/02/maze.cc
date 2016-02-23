@@ -18,10 +18,11 @@ enum Direction {
 
 class MazeError {};
 
-class Cell {
+class Cell : public Shape{
     friend class Board;
 
     int row_, col_;
+    int length_;
     bool visited_;
     int walls_;
     Cell* up_;
@@ -47,9 +48,9 @@ class Cell {
     
     public:
     
-    Cell(int row, int col) : visited_(false), row_(row), col_(col), 
+    Cell(int row, int col, int size) : visited_(false), row_(row), col_(col), 
     walls_(UP | RIGHT | DOWN | LEFT),
-    up_(0), right_(0), down_(0), left_(0) {}
+    up_(0), right_(0), down_(0), left_(0), length_(size) {}
     
     void drill(Direction dir) {
         //dir = 1000
@@ -85,13 +86,14 @@ class Cell {
         return walls_ & dir;
     }
     
-    void draw(int length) const {
+    void draw() const {
     		Path p;
-    		p.add_option("M",new Point(col_*length,row_*length));
-    		p.add_option((has_wall(DOWN) ? "L" : "M"),new Point(length,0));
-    		p.add_option((has_wall(RIGHT) ? "L" : "M"),new Point(0,length));
-    		p.add_option((has_wall(UP) ? "L" : "M"),new Point(-length,0));
-    		p.add_option((has_wall(LEFT) ? "L" : "M"),new Point(0,-length));
+    		p.add_option("M",new Point(col_*length_,row_*length_));
+    		p.add_option((has_wall(DOWN) ? "L" : "M"),new Point(length_,0));
+    		p.add_option((has_wall(RIGHT) ? "L" : "M"),new Point(0,length_));
+    		p.add_option((has_wall(UP) ? "L" : "M"),new Point(-length_,0));
+    		p.add_option((has_wall(LEFT) ? "L" : "M"),new Point(0,-length_));
+    		p.draw();
 //        cout << length << " " << 0 << (has_wall(DOWN) ? " rlineto" : " rmoveto") << endl;
 //        cout << 0 << " " << length << (has_wall(RIGHT) ? " rlineto" : " rmoveto")  << endl;
 //        cout << -length << " " << 0 << (has_wall(UP) ? " rlineto" : " rmoveto") << endl;
@@ -156,13 +158,14 @@ class Cell {
 class Board {
     vector<Cell> cells_;
     int rows_, cols_;
+    int cell_size_;
     
     public:
     
-    Board(int rows, int cols) : rows_(rows), cols_(cols) {
+    Board(int rows, int cols, int cell_size) : rows_(rows), cols_(cols), cell_size_(cell_size) {
         for (int i = 0; i < rows_; i++) {
             for(int j = 0; j < cols_; j++) {
-                cells_.push_back(Cell(i, j));
+                cells_.push_back(Cell(i, j, cell_size_));
             }
         }
         
@@ -185,15 +188,15 @@ class Board {
         return cells_[i * cols_ + j];
     }
     
-    void draw(int size = 10) const {
+    void draw() {
 		//cout << "newpath" << endl;
 		
-		Canvas c(rows_*size,cols_*size);
+		Canvas c(rows_*cell_size_,cols_*cell_size_);
 
-		for(vector<Cell>::const_iterator it = cells_.begin();
+		for(vector<Cell>::iterator it = cells_.begin();
 			it!=cells_.end(); ++it) {
 		
-			(*it).draw(size);	
+			c.add(&(*it));	
 		}
 		
 		c.draw();
@@ -217,10 +220,10 @@ void generate_maze(Board& board, Cell& start) {
 int main() {
 		int rows = 30,cols = 30;
 		int cell_size = 20;
-    Board board(rows, cols);
+    Board board(rows, cols, cell_size);
     Cell& start = board.at(0, 0);
     generate_maze(board, start);
-		board.draw(cell_size);
+		board.draw();
     return 0;
 }
 
