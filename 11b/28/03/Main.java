@@ -39,6 +39,7 @@ public class Main {
 		return result;
 	}
 
+	/*
 	private static void interpret(InputStream in) {
 		
 		String sortOption = UP;
@@ -68,10 +69,33 @@ public class Main {
 		
 		scanner.close();
 	}
-	
+	*/
 	public static void main(String[] args) {
 		
-		interpret(System.in);
+		//interpret(System.in);
+		
+		String sortOption = UP;
+		List<String> allProperties = new ArrayList<String>();
+		
+		try {
+			for(String token: args) {
+				token = token.trim();
+				
+				if(token.isEmpty()) {
+					continue;
+				}
+				
+				String property = getProperty(token);
+				if(property != null) {
+					allProperties.add(property);
+				}
+			}
+			if(args[args.length - 1].equals(DOWN)) {
+				sortOption = DOWN;
+			}
+			sort(allProperties, sortOption);
+		} catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println(e.getMessage());
+		}
 	}
-
 }
