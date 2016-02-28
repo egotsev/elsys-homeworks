@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Stack;
 
 public class OOP_03 {
-	public static void main(String[]args){
+	private static void print_ptoperty_using_sysin(){
 		try {
 			Stack<Stack<Character>> st=new Stack<Stack<Character>>();
 			int c=0;
@@ -39,5 +39,17 @@ public class OOP_03 {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	private static void print_property_using_args(String[] args){
+		for(int i=0;i<args.length;i++){
+			String el=System.getProperty(args[i]);
+			if(el!=null){
+				System.out.println(el);
+			}
+		}
+	}
+	public static void main(String[]args){
+		print_ptoperty_using_sysin();
+		print_property_using_args(args);
 	}
 }
