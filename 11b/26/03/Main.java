@@ -1,7 +1,7 @@
 public class Main {
 
     public static void main(String[] args) {
-	    int end = args.length - 1;
+	int end = args.length - 1;
 
         String sortMethod = args[end];
 
