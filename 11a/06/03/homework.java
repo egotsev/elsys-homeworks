@@ -24,7 +24,7 @@ public class homeworkNo3
 		{
 			for (String element : properties.keySet())
 			{
-				System.out.println(element + properties.get(element));
+				System.out.println(properties.get(element));
 			};
 		}
 	}
