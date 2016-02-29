@@ -30,7 +30,7 @@ public class HelloJava {
             else
                 sort = property;
         }
-        Arrays.sort(args);
+        Arrays.sort(properties);
         if (sort != null || sort.equals("down")) {
             Collections.reverse(properties);
         }
