@@ -6,7 +6,6 @@
 package hello.java;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -30,8 +29,8 @@ public class HelloJava {
             else
                 sort = property;
         }
-        Arrays.sort(properties);
-        if (sort != null || sort.equals("down")) {
+        Collections.sort(properties);
+        if (sort.equals("up")) {
             Collections.reverse(properties);
         }
         for(String property : properties)
