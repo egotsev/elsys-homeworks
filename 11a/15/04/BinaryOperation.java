@@ -10,12 +10,16 @@ public abstract class BinaryOperation extends Operation {
 	@Override
 	public void eval() {
 		// TODO Auto-generated method stub
-		//double v1 = getContext().pop();
-		double v2 = getContext().pop();
+		Stack<Double> Context = getContext();
 		
-		
-		if(v2 != getContext().pop()) {
-			System.out.println("Error!");
+		if(Context.size() < 2) {
+			throw new IllegalStateException();
+		} else {
+			double v1 = Context.pop();
+			double v2 = Context.pop();
+			double res = calc(v1, v2);
+			System.out.println("R: " + res);
+			getContext().push(res);
 		}
 	}
 
