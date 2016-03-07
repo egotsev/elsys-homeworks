@@ -1,5 +1,7 @@
 package org.elsys.postfix;
 
+import java.util.Stack;
+
 public abstract class BinaryOperation extends Operation {
 
 	public BinaryOperation(String name) {
@@ -10,6 +12,7 @@ public abstract class BinaryOperation extends Operation {
 	@Override
 	public void eval() {
 		// TODO Auto-generated method stub
+		
 		Stack<Double> Context = getContext();
 		
 		if(Context.size() < 2) {

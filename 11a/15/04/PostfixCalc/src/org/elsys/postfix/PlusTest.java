@@ -1,4 +1,4 @@
-package org.elsys.postfix;
+/*package org.elsys.postfix;
 
 import static org.junit.Assert.*;
 
@@ -19,8 +19,10 @@ public class PlusTest {
 		
 		
 		//assert
+		//String expected = "XXXXXXXXXXXX7788";
+		//assertEquals(expected, result);
 		double expected = 7.0;
 		assertEquals(expected, res);
 	
 	}
-}
+}*/

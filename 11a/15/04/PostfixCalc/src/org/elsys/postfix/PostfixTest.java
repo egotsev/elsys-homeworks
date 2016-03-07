@@ -1,4 +1,4 @@
-package org.elsys.postfix;
+/*package org.elsys.postfix;
 
 import static org.junit.Assert.*;
 
@@ -54,4 +54,4 @@ public class PostfixTest {
 		assertEquals(1, context.size());
 		assertEquals(200.0, context.pop(), 0.000001);
 	}
-}
+}*/

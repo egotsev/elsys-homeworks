@@ -1,4 +1,4 @@
-package org.elsys.postfix;
+/*package org.elsys.postfix;
 
 import static org.junit.Assert.*;
 
@@ -21,4 +21,4 @@ public class MinusTest {
 		double expected = 3.0;
 		assertEquals(expected, res);
 	}
-}
+}*/

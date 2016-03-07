@@ -1,8 +1,8 @@
 package org.elsys.postfix;
 
-public class Devide extends Operation {
-	public Devide() {
-		super("/");
+public class Minus extends Operation {
+	public Minus() {
+		super("-");
 	}
 	
 	@Override
@@ -10,7 +10,7 @@ public class Devide extends Operation {
 		double v1 = getContext().pop();
 		double v2 = getContext().pop();
 		
-		double res = v1 / v2;
+		double res = v2 - v1;
 		System.out.println("R: " + res);
 		getContext().push(res);
 	}

@@ -42,6 +42,7 @@ public class Postfix {
 					// unknown operation
 					// ....
 					System.out.println("Unknown operation <" + token + ">");
+					throw new UnsupportedOperationException();
 				}
 			}
 		}
