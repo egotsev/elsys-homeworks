@@ -1,6 +1,11 @@
 public class Main {
 
     public static void main(String[] args) {
+    	if (args.length == 0) {
+    	    System.err.println("No arguments provided");
+    	    System.exit(1);
+    	}
+    	
 	int end = args.length - 1;
 
         String sortMethod = args[end];
@@ -27,3 +32,4 @@ public class Main {
         }
     }
 }
+
