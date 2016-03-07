@@ -15,7 +15,7 @@ public abstract class BinaryOperator extends Operation {
 		if (getContext().size() < 2) {
 			throw new IllegalStateException();
 		}else{
-			calc(getContext().firstElement(), getContext().lastElement());
+			calc(getContext().pop(), getContext().pop());
 		}
 	}
 
