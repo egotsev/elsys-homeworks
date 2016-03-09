@@ -11,9 +11,8 @@ public class Divide extends BinaryOperation {
 		if (v2 == 0.0) {
 			throw new IllegalArgumentException();
 		}
-		double result = v1 / v2;
 		
-		return result;
+		return v1 / v2;
 	}
 
 }

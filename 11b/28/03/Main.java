@@ -20,7 +20,7 @@ public class Main {
 	private static void sort(List<String> properties, String sortOption) {
 		Collections.sort(properties);
 		
-		if(sortOption.equals(DOWN)) {
+		if(DOWN.equals(sortOption)) {
 			Collections.reverse(properties);
 		}
 		
@@ -75,7 +75,7 @@ public class Main {
 		//interpret(System.in);
 		
 		String sortOption = UP;
-		List<String> allProperties = new ArrayList<String>();
+		List<String> allProperties = new ArrayList<>();
 		
 		try {
 			for(String token: args) {
@@ -90,7 +90,7 @@ public class Main {
 					allProperties.add(property);
 				}
 			}
-			if(args[args.length - 1].equals(DOWN)) {
+			if(DOWN.equals(args[args.length - 1])) {
 				sortOption = DOWN;
 			}
 			sort(allProperties, sortOption);

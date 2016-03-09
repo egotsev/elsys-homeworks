@@ -10,15 +10,14 @@ public abstract class BinaryOperation extends Operation {
 	public void eval() {
 			
 		double[] values = {0.0d, 0.0d};
-		if (!(super.getContext().size() < 2)) {
+		if (getContext().size() > 1) {
 			values[0] = super.getContext().pop();
 			values[1] = super.getContext().pop();
 		} else {
 			throw new IllegalStateException();
 		}
 		
-		double result = 0.0d;
-		result = this.calc(values[1], values[0]);
+		double result = calc(values[1], values[0]);
 		System.out.println("R: " + result);
 		getContext().push(result);
 	}

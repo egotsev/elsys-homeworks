@@ -27,7 +27,7 @@ public class PostfixTestCase {
 	}
 
 	@Test
-	public void PostfixPlusTest() {
+	public void postfixPlusTest() {
 		Scanner scanner = new Scanner("10 20 +");
 		postfix.interpret(scanner);
 		
@@ -36,8 +36,9 @@ public class PostfixTestCase {
 		assertEquals(1, context.size());
 		assertEquals(30.0, context.pop(), 0.000001);
 	}
+	
 	@Test
-	public void PostfixMinusTest() {
+	public void postfixMinusTest() {
 		Scanner scanner = new Scanner("20 10 -");
 		postfix.interpret(scanner);
 		
@@ -46,8 +47,9 @@ public class PostfixTestCase {
 		assertEquals(1, context.size());
 		assertEquals(10.0, context.pop(), 0.000001);
 	}
+	
 	@Test
-	public void PostfixMultiplyTest() {
+	public void postfixMultiplyTest() {
 		Scanner scanner = new Scanner("10 20 *");
 		postfix.interpret(scanner);
 		
@@ -56,8 +58,9 @@ public class PostfixTestCase {
 		assertEquals(1, context.size());
 		assertEquals(200.0, context.pop(), 0.000001);
 	}
+	
 	@Test
-	public void PostfixDivideTest() {
+	public void postfixDivideTest() {
 		Scanner scanner = new Scanner("20 10 /");
 		postfix.interpret(scanner);
 		
@@ -68,25 +71,28 @@ public class PostfixTestCase {
 	}
 	
 	@Test(expected = IllegalStateException.class)
-	public void BinaryOperationOneArgumentTest() {
+	public void binaryOperationOneArgumentTest() {
 		Scanner scanner = new Scanner("10 +");
 		
 		postfix.interpret(scanner);
 	}
+	
 	@Test(expected = IllegalArgumentException.class)
-	public void BinaryOperationZeroDivisionTest() {
+	public void binaryOperationZeroDivisionTest() {
 		Scanner scanner = new Scanner("10 0 /");
 		
 		postfix.interpret(scanner);
 	}
+	
 	@Test(expected = IllegalArgumentException.class)
-	public void BinaryOperationUnknownOperationTest() {
+	public void binaryOperationUnknownOperationTest() {
 		Scanner scanner = new Scanner("10 20 @");
 		
 		postfix.interpret(scanner);
 	}
+	
 	@Test(expected = IllegalStateException.class)
-	public void BinaryOperationDifferentStateTest() {
+	public void binaryOperationDifferentStateTest() {
 		Scanner scanner = new Scanner("10 + 20");
 		
 		postfix.interpret(scanner);

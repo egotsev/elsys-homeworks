@@ -8,9 +8,8 @@ public class Plus extends BinaryOperation{
 
 	@Override
 	public double calc(double v1, double v2) {
-		double result = v1 + v2;
 		
-		return result;
+		return v1 + v2;
 	}
 
 }
