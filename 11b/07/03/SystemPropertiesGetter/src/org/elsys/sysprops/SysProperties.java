@@ -5,53 +5,56 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class SysProperties {
-	private static String GetProperty(String property){
+	private static final String UP = "up";
+	private static final String DOWN = "down";
+
+	private static String getProperty(String property) {
 		String result = "";
-		try{
+		try {
 			result = System.getProperty(property);
-		}catch(SecurityException se){
+		} catch (SecurityException se) {
 			System.err.println("SecurityException: " + se.getMessage());
-		}catch(NullPointerException ne){
+		} catch (NullPointerException ne) {
 			System.err.println("NullPointerException: " + ne.getMessage());
-		}catch(IllegalArgumentException iae){
+		} catch (IllegalArgumentException iae) {
 			System.err.println("IllegalArguementException: " + iae.getMessage());
 		}
-		return (result!=null && !result.isEmpty()) ? result:null;
+		return (result != null && !result.isEmpty()) ? result : null;
 	}
 
 	private static void sortAndPrint(String op, String[] arr) {
-		if(op.equals("down")) {
+		if (DOWN.equals(op)) {
 			Arrays.sort(arr, Collections.reverseOrder());
-		}else{
+		} else {
 			Arrays.sort(arr);
 		}
-		for(int i = 0; i < arr.length; ++i){
+		for (int i = 0; i < arr.length; ++i) {
 			System.out.println(arr[i]);
 		}
 	}
-	
-	private static String[] ListToArray(ArrayList<String> arrlist) {
-		while(arrlist.contains(null)) {
+
+	private static String[] listToStringArray(ArrayList<String> arrlist) {
+		while (arrlist.contains(null)) {
 			arrlist.remove(null);
 		}
 		String[] str = new String[arrlist.size()];
 		str = arrlist.toArray(str);
 		return str;
 	}
-	
+
 	public static void main(String[] args) {
 		int checkSize = args.length;
-		if(checkSize > 0) {
-			String option = "up";
-			ArrayList<String> strList = new ArrayList<String>();
-			if(args[checkSize-1].equals("up") || args[checkSize-1].equals("down")){
+		if (checkSize > 0) {
+			String option = UP;
+			ArrayList<String> strList = new ArrayList<>();
+			if (UP.equals(args[checkSize - 1]) || DOWN.equals(args[checkSize - 1])) {
 				checkSize--;
 				option = args[checkSize];
 			}
-			for(int i = 0; i < checkSize; ++i){
-				strList.add(GetProperty(args[i]));
+			for (int i = 0; i < checkSize; ++i) {
+				strList.add(getProperty(args[i]));
 			}
-			sortAndPrint(option, ListToArray(strList));
+			sortAndPrint(option, listToStringArray(strList));
 		}
 	}
 

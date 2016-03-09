@@ -3,7 +3,6 @@ package org.elsys.postfix;
 public class Multiply extends BinaryOperation {
 
 	public Multiply() {
-		// TODO Auto-generated constructor stub
 		super("*");
 	}
 

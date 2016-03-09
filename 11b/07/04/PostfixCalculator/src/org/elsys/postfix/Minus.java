@@ -3,7 +3,6 @@ package org.elsys.postfix;
 public class Minus extends BinaryOperation {
 
 	public Minus() {
-		// TODO Auto-generated constructor stub
 		super("-");
 	}
 
