@@ -17,7 +17,7 @@ public class Property
 				String out = vector.elementAt(i);
 			}
 			else{
-					vector.elementAt((vector.size() - i) - 1);
+				vector.elementAt((vector.size() - i) - 1);
 			}
 			System.out.println(out);
 		}
