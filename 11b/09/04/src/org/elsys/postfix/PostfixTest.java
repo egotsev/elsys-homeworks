@@ -69,16 +69,7 @@ public class PostfixTest {
 	    Stack<Double> context = postfix.getContext();
 	    assertEquals(36.0, context.elementAt(0), 0.1);
 	}
-	/*
-	@Test (expected=NumberFormatException.class)
-	public void testInvalidOperation(){
-		Scanner scanner = new Scanner("3 2 $");
-	    postfix.interpret(scanner);
-	    //Stack<Double> context = postfix.getContext();
-	    System.out.println(outContent.toString());
-	    //assertEquals("D:<3.0>\nD:<2.0>\nUnknown operation <$>\n", outContent.toString());
-	}
-	*/
+
 	@Test (expected=IllegalStateException.class)
 	public void testPlusWithOneArgument(){
 		Scanner scanner = new Scanner("13 +");

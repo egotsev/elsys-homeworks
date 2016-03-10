@@ -7,26 +7,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BinaryTest {
-	private Plus plus;
-	private Minus minus;
-	private Divide divide;
-	private Multiply multiply;
+	private Plus plus = new Plus();
+	private Minus minus = new Minus();
+	private Divide divide = new Divide();
+	private Multiply multiply = new Multiply();
 	public static boolean status = false;
 	@Before
 	public void setUp() throws Exception {
-		plus = new Plus();
-		minus = new Minus();
-		divide = new Divide();
-		multiply = new Multiply();
 		status = true;
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		plus = null;
-		minus = null;
-		divide = null;
-		multiply = null;
 		status = false;
 	}
 

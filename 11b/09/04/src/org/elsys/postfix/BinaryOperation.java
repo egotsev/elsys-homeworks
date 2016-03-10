@@ -4,13 +4,12 @@ public abstract class BinaryOperation extends Operation {
 
 	public BinaryOperation(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void eval() {
 		int size = getContext().size();
-		if(size < 2){
+		if (size < 2) {
 			throw new IllegalStateException();
 		}
 		double v1 = getContext().pop();
