@@ -24,7 +24,7 @@ public class PostfixTestCase {
 	}
 
 	@Test
-	public void test() {
+	public void testPlus() {
 		Scanner scanner = new Scanner("10 20 +");
 		postfix.interpret(scanner);
 		
@@ -34,4 +34,36 @@ public class PostfixTestCase {
 		assertEquals(30.0, context.pop(), 0.000001);
 	}
 
+	@Test
+	public void testMinus() {
+		Scanner scanner = new Scanner("20 10 -");
+		postfix.interpret(scanner);
+		
+		Stack<Double> context = postfix.getContext();
+		
+		assertEquals(1, context.size());
+		assertEquals(10.0, context.pop(), 0.000001);
+	}
+	
+	@Test
+	public void testMultiply() {
+		Scanner scanner = new Scanner("10 20 *");
+		postfix.interpret(scanner);
+		
+		Stack<Double> context = postfix.getContext();
+		
+		assertEquals(1, context.size());
+		assertEquals(200.0, context.pop(), 0.000001);
+	}
+	
+	@Test
+	public void testDivide() {
+		Scanner scanner = new Scanner("20 10 /");
+		postfix.interpret(scanner);
+		
+		Stack<Double> context = postfix.getContext();
+		
+		assertEquals(1, context.size());
+		assertEquals(2.0, context.pop(), 0.000001);
+	}
 }
