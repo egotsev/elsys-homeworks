@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.elsys.serializer.AbstractSerializer;
 import org.elsys.serializer.Ignore;
+import org.elsys.serializer.MapBy;
 import org.elsys.serializer.Serializer;
 
 public class JsonSerializer extends AbstractSerializer
@@ -50,7 +51,13 @@ public class JsonSerializer extends AbstractSerializer
 					continue;
 				}
 				
-				result.append('"').append(field.getName())
+				MapBy mapAnnotation = field.getAnnotation(MapBy.class);
+				
+				//Set name corresponding to annotation existence
+				String name = (mapAnnotation != null) 
+						? mapAnnotation.value() : field.getName(); 
+				
+				result.append('"').append(name)
 				.append("\" : ");
 				
 				result.append(serialize(value));
