@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 public abstract class AbstractSerializer implements Serializer {
 	
 	private boolean isPretty;
-
+	private boolean includeNullFields;
+	
 	protected List<Field> getFieldsToSerialize(Class<?> cls) {
 		List<Field> fields = new LinkedList<>();
 		while (cls != Object.class) {
@@ -38,14 +39,12 @@ public abstract class AbstractSerializer implements Serializer {
 
 	@Override
 	public boolean areIncludedNullFields() {
-		
-		return false;
+		return includeNullFields;
 	}
 
 	@Override
 	public void includeNullFields(boolean includeNullFields) {
-		// TODO Auto-generated method stub
-
+		this.includeNullFields = includeNullFields;
 	}
 
 	@Override

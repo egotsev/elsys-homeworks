@@ -15,8 +15,8 @@ public class Main {
 		
 		Serializer serializer = new JsonSerializer();
 		serializer.setPretty(true);
-		String result = serializer.serialize(student);
 		serializer.includeNullFields(false);
+		String result = serializer.serialize(student);
 		System.out.println(result);
 	}
 

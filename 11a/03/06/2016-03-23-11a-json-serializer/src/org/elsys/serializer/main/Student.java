@@ -2,6 +2,7 @@ package org.elsys.serializer.main;
 
 import java.util.List;
 
+import org.elsys.serializer.Ignore;
 import org.elsys.serializer.MapBy;
 
 public class Student {
@@ -11,6 +12,7 @@ public class Student {
 	@MapBy("last_name")
 	private String lastName;
 	
+	@Ignore
 	private List<Integer> grades;
 	
 	@MapBy("father_name")
