@@ -14,7 +14,6 @@ public class Student {
 	@MapBy("last_name")
 	private String lastName;
 	
-	@Ignore
 	private List<Integer> grades;
 	
 	@MapBy("father_name")
