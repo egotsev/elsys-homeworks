@@ -14,12 +14,21 @@ public abstract class AbstractSerializer implements Serializer {
 	
 	protected List<Field> getFieldsToSerialize(Class<?> cls) {
 		List<Field> fields = new LinkedList<>();
+		
 		while (cls != Object.class) {
 			fields.addAll(Arrays.asList(cls.getDeclaredFields()));
 			cls = cls.getSuperclass();
 		}
+		
+		fields.forEach(field -> {
+			//Check for conflicting annotations
+			if(field.isAnnotationPresent(Ignore.class) && 
+					field.getAnnotation(MapBy.class) != null){
+					throw new IllegalAnnotationException(field.getName() + 
+							":You can't ignore me when you said to map me!");}
+		});
+		
 		return fields.stream().filter(field -> {
-			// Ignore annotation = field.getAnnotation(Ignore.class);
 			return !field.isAnnotationPresent(Ignore.class);
 		}).collect(Collectors.toList());
 	}

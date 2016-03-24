@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.elsys.serializer.AbstractSerializer;
 import org.elsys.serializer.Ignore;
+import org.elsys.serializer.IllegalAnnotationException;
 import org.elsys.serializer.MapBy;
 import org.elsys.serializer.Serializer;
 
@@ -38,10 +39,6 @@ public class JsonSerializer extends AbstractSerializer
 			= getFieldsToSerialize(obj.getClass());
 		
 		for (Field field : fieldsToSerialize) {
-			if(field.isAnnotationPresent(Ignore.class)){
-				continue;
-			}
-			
 			field.setAccessible(true);
 			
 			try {

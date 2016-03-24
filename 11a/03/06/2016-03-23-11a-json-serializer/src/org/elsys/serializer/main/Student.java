@@ -9,6 +9,8 @@ public class Student {
 	
 	private String name;
 	
+	private Student test;
+	
 	@MapBy("last_name")
 	private String lastName;
 	
@@ -24,6 +26,8 @@ public class Student {
 
 	public void setName(String name) {
 		this.name = name;
+		test = new Student();
+		test.name = name;
 	}
 
 	public String getLastName() {
