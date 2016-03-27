@@ -1,10 +1,6 @@
 import robocode.*;
 import robocode.util.*;
 
-/**
- * SuperWalls - a sample robot by CrazyBassoonist based on the sample robot Walls by Mathew Nelson and maintained by Flemming N. Larsen
- * Moves around the outer edge with two targeting systems
- */
 public class Billy extends AdvancedRobot {
 	
 	@Override
