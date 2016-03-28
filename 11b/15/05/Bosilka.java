@@ -10,12 +10,12 @@ import robocode.util.Utils;
 import java.awt.Color;
 
 public class Bosilka extends AdvancedRobot {
-	
+
 	private int moveDirection = 1;
 	double previousEnergy = 100;
 	int gunDirection = 1;
 	int wallMargin = 60;
-    
+
 	public void setColors()
 	{
 		setBodyColor(Color.BLACK);
@@ -24,14 +24,14 @@ public class Bosilka extends AdvancedRobot {
 		setBulletColor(Color.RED);
 		setScanColor(Color.BLACK);
 	}
-	
+
 	public void run() {
 		setColors();
 	     do {
 	         if (getRadarTurnRemaining() == 0)
 	             setTurnRadarRight(Double.POSITIVE_INFINITY);
 	         execute();
-	         
+
 	     } while (true);
 	 }
 	 static final double FACTOR = 2.1;
@@ -39,25 +39,26 @@ public class Bosilka extends AdvancedRobot {
 	     double absBearing = e.getBearingRadians() + getHeadingRadians();
 	     setTurnRadarRightRadians( FACTOR * robocode.util.Utils.normalRelativeAngle(absBearing - getRadarHeadingRadians()) );
 	     aceInTheHole(e);
-	     wallSmoothing(absBearing);
-	     
 	     if(getOthers() > 10)
 	     {
-	    	 
+
 	    	 doCircling(e);
-	    	 
+				 wallSmoothing(absBearing);
+
 	     }
 	     else if(getOthers() < 10 && getOthers() > 1){
 	    	 doStraffing(e);
+				 wallSmoothing(absBearing);
 	     }
 	     else if(getOthers() == 1)
 	     {
 	    	 seekAndDestroy(e);
+				 wallSmoothing(absBearing);
 	     }
-	    	
-	     
-	 }   
-	 
+
+
+	 }
+
 	 public void wallSmoothing(double absBearing)
 	 {
 		 double goalDirection = absBearing-Math.PI/2*moveDirection;
@@ -76,9 +77,9 @@ public class Bosilka extends AdvancedRobot {
 	     else
 	     	setAhead(100);
 	     setTurnRightRadians(turn);
-	     
+
 	 }
-	 
+
 	 public void aceInTheHole(ScannedRobotEvent e)
 	 {
 		 double bulletPower = Math.min(3.0,getEnergy());
@@ -89,22 +90,22 @@ public class Bosilka extends AdvancedRobot {
 		    double enemyY = getY() + e.getDistance() * Math.cos(absoluteBearing);
 		    double enemyHeading = e.getHeadingRadians();
 		    double enemyVelocity = e.getVelocity();
-		     
-		     
+
+
 		    double deltaTime = 0;
 		    double battleFieldHeight = getBattleFieldHeight(), battleFieldWidth = getBattleFieldWidth();
 		    double predictedX = enemyX, predictedY = enemyY;
-		    while((++deltaTime) * (20.0 - 3.0 * bulletPower) <   Point2D.Double.distance(myX, myY, predictedX, predictedY)){		
-		    	predictedX += Math.sin(enemyHeading) * enemyVelocity;	
+		    while((++deltaTime) * (20.0 - 3.0 * bulletPower) <   Point2D.Double.distance(myX, myY, predictedX, predictedY)){
+		    	predictedX += Math.sin(enemyHeading) * enemyVelocity;
 		    	predictedY += Math.cos(enemyHeading) * enemyVelocity;
 		    	if(	predictedX < 18.0 || predictedY < 18.0 || predictedX > battleFieldWidth - 18.0 || predictedY > battleFieldHeight - 18.0){
-		    		predictedX = Math.min(Math.max(18.0, predictedX), battleFieldWidth - 18.0);	
+		    		predictedX = Math.min(Math.max(18.0, predictedX), battleFieldWidth - 18.0);
 		    		predictedY = Math.min(Math.max(18.0, predictedY), battleFieldHeight - 18.0);
 		    		break;
 		    	}
 		    }
 		    double theta = Utils.normalAbsoluteAngle(Math.atan2(predictedX - getX(), predictedY - getY()));
-		     
+
 		    setTurnRadarRightRadians(Utils.normalRelativeAngle(absoluteBearing - getRadarHeadingRadians()));
 		    setTurnGunRightRadians(Utils.normalRelativeAngle(theta - getGunHeadingRadians()));
 		    fire(bulletPower);
@@ -116,11 +117,9 @@ public class Bosilka extends AdvancedRobot {
 			         moveDirection = - moveDirection;
 			         setAhead((e.getDistance()/4+25) * moveDirection);
 			     }
-			    gunDirection = -gunDirection;
-			    setTurnGunRight(99999*gunDirection);
-			    
+
 			  }
-	 
+
 	 public void doCircling(ScannedRobotEvent enemy) {
 			if (getVelocity() == 0)
 				moveDirection *= -1;
@@ -136,7 +135,7 @@ public class Bosilka extends AdvancedRobot {
 				setAhead(150 * moveDirection);
 			}
 		}
-	 
+
 	 public void onHitRobot(HitRobotEvent event) {
 	       if (event.getBearing() > -90 && event.getBearing() <= 90) {
 	           setBack(100);
@@ -144,9 +143,9 @@ public class Bosilka extends AdvancedRobot {
 	           setAhead(100);
 	       }
 	   }
-	 
-	 
-	 
-	
-	 
+
+
+
+
+
 }
