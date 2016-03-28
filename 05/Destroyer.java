@@ -14,15 +14,18 @@ public class Destroyer extends AdvancedRobot{
 		setScanColor(new Color(255, 99, 71));//tomato
 		
 		while (true) {
-			ahead(100); // Move ahead 100
-			turnGunRight(360); // Spin gun around
-			back(100); // Move back 100
-			turnGunRight(360); // Spin gun around
+			// switch directions if we've stopped
+			if (getVelocity() == 0)
+			moveDirection *= -1;
+
+			// circle our enemy
+			setTurnRight(enemy.getBearing() + 90);
+			setAhead(1000 * moveDirection);
 		}
 	}
 
 	public void onScannedRobot() {
-		
+		//..
 		turnGunTo(scannedAngle);
 		fire(3);
 	}
