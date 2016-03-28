@@ -1,0 +1,124 @@
+package shortpackagename;
+
+import robocode.*;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
+import java.awt.*;
+
+public class Decisoner extends AdvancedRobot {
+	boolean movingForward;
+	boolean inWall;
+	double i = 10;
+	double j = 10;
+	
+	public void run() {
+		setColors();
+		setAdjustRadarForRobotTurn(true);
+		setAdjustGunForRobotTurn(true);
+		setAdjustRadarForGunTurn(true);
+
+		if (getX() <= 50 || getY() <= 50
+				|| getBattleFieldWidth() - getX() <= 50
+				|| getBattleFieldHeight() - getY() <= 50) {
+			this.inWall = true;
+		} else {
+			this.inWall = false;
+		}
+
+		setAhead(40000);
+		setTurnRadarRight(360);
+		this.movingForward = true;
+
+		while (true) {
+			if (getX() > 50 && getY() > 50
+					&& getBattleFieldWidth() - getX() > 50
+					&& getBattleFieldHeight() - getY() > 50
+					&& this.inWall == true) {
+				this.inWall = false;
+			}
+			if (getX() <= 50 || getY() <= 50
+					|| getBattleFieldWidth() - getX() <= 50
+					|| getBattleFieldHeight() - getY() <= 50) {
+				if (this.inWall == false) {
+					reverseDirection();
+					inWall = true;
+				}
+			}
+
+			if (getRadarTurnRemaining() == 0.0) {
+				setTurnRadarRight(360);
+			}
+
+			execute();
+		}
+	}
+
+	
+
+	public void onScannedRobot(ScannedRobotEvent e) {
+		double absoluteBearing = getHeading() + e.getBearing();	
+		
+		if(i == j){
+			i = 0;
+		}else if(i == 0){
+			i = j;
+		}
+		
+		double bearingFromGun = normalRelativeAngleDegrees(absoluteBearing
+				- getGunHeading() + i);
+		double bearingFromRadar = normalRelativeAngleDegrees(absoluteBearing
+				- getRadarHeading());
+
+		if (this.movingForward) {
+			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 80));
+		} else {
+			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 100));
+		}
+
+		if (Math.abs(bearingFromGun) <= 4) {
+			setTurnGunRight(bearingFromGun);
+			setTurnRadarRight(bearingFromRadar);
+
+			if (getGunHeat() == 0 && getEnergy() > .2) {
+				fire(Math.min(
+						4.5 - Math.abs(bearingFromGun) / 2 - e.getDistance() / 250, 
+						getEnergy() - .1));
+			}
+		}
+		else {
+			setTurnGunRight(bearingFromGun);
+			setTurnRadarRight(bearingFromRadar);
+		}
+
+		if (bearingFromGun == 0) {
+			scan();
+		}
+	}
+
+	public void onHitRobot(HitRobotEvent e) {
+		if (e.isMyFault()) {
+			reverseDirection();
+		}
+	}
+	
+	public void onHitWall(HitWallEvent e) {
+		reverseDirection();
+	}
+
+	private void setColors() {
+		setBodyColor(Color.YELLOW);
+		setGunColor(Color.GREEN);
+		setRadarColor(Color.GRAY);
+		setBulletColor(Color.PINK);
+		setScanColor(Color.GRAY);
+	}
+
+	public void reverseDirection() {
+		if (this.movingForward) {
+			setBack(40000);
+			this.movingForward = false;
+		} else {
+			setAhead(40000);
+			this.movingForward = true;
+		}
+	}
+}
