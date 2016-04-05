@@ -28,8 +28,7 @@ public class JsonSerializer extends AbstractSerializer implements Serializer {
 		final StringBuffer result = new StringBuffer();
 		
 		if(isPretty() == true) {
-			result.append("{").append(System.lineSeparator());
-		} else {
+			result.append("{").append(System.lineSeparator());		} else {
 			result.append("{");
 		}
 		
@@ -73,7 +72,11 @@ public class JsonSerializer extends AbstractSerializer implements Serializer {
 			result.deleteCharAt(result.length() - 1);
 			result.deleteCharAt(result.length() - 1);
 		}
-		result.append("}");
+		if(isPretty()){			
+			result.append(System.lineSeparator()).append("}");
+		} else {
+			result.append("}");
+		}
 		return result.toString();
 	}
 	
@@ -87,14 +90,19 @@ public class JsonSerializer extends AbstractSerializer implements Serializer {
 		}
 		
 		collection.forEach(obj -> {	
-			result.append(serialize(obj));
-			result.append(',');
+			result.append("        ").append(serialize(obj));
+			result.append(',').append(System.lineSeparator());
 		});
 		if (!collection.isEmpty()) {
 			result.deleteCharAt(result.length() - 1);
 		}
-		result.append("]");
+		if(isPretty()) {			
+			result.append(System.lineSeparator()).append("    ").append("]");
+		} else {
+			result.append("]");
+		}
 		return result.toString();
 	}
 
 }
+
